@@ -140,6 +140,21 @@ let (get_branche_droite : tarbre -> tarbre) =
 (* Fonctions utiles *)
 (* ================ *)
 
+(* on parcourt le document pour vérifier si un mot donné y est présent *)
+let rec (appartient_doc : string -> tdoc -> bool) = 
+  function mot_cible -> 
+    function doc ->
+      if est_vide_doc doc then
+        false
+      else
+        let prem = get_prem_mot doc in
+        if prem = mot_cible then
+          true
+        else
+          let reste = get_reste_doc doc in
+          appartient_doc mot_cible reste;;
+
+let rec (classer_doc : tarbre -> tdoc -> tdecision) =
 
 (* ===== *)
 (* Tests *)
