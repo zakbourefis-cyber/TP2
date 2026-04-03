@@ -136,6 +136,11 @@ let (get_branche_droite : tarbre -> tarbre) =
   function Noeud(_, _, droite) -> droite
          | Feuille _           -> failwith "Erreur !";;
 
+(* ================ *)
+(* Fonctions utiles *)
+(* ================ *)
+
+
 (* ===== *)
 (* Tests *)
 (* ===== *)
