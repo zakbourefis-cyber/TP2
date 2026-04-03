@@ -165,10 +165,10 @@ let rec (classer_doc : tarbre -> tdoc -> tdecision) =
       else
         let mot_cible = s_mot_noeud arbre in
         if appartient_doc mot_cible doc then
-          classer_doc (get_branche) doc
+          classer_doc (get_branche_gauche arbre) doc
         else
-          (* Le mot n'y est pas : on descend à droite ! *)
-          classer_doc (...) doc;;
+          classer_doc (get_branche_droite arbre) doc;;
+
 (* ===== *)
 (* Tests *)
 (* ===== *)
@@ -189,3 +189,4 @@ let test_mot_racine = s_mot_noeud arbre_test;;
 
 let sous_arbre_gauche = get_branche_gauche arbre_test;;
 let test_decision_gauche = s_decision_feuille sous_arbre_gauche;; 
+let decision_test = classer_doc arbre_test doc1;; 
