@@ -158,7 +158,17 @@ let rec (appartient_doc : string -> tdoc -> bool) =
           appartient_doc mot_cible reste;;
 
 let rec (classer_doc : tarbre -> tdoc -> tdecision) =
-
+  function arbre -> 
+    function doc ->
+      if est_feuille arbre then
+        s_decision_feuille arbre 
+      else
+        let mot_cible = s_mot_noeud arbre in
+        if appartient_doc mot_cible doc then
+          classer_doc (get_branche) doc
+        else
+          (* Le mot n'y est pas : on descend à droite ! *)
+          classer_doc (...) doc;;
 (* ===== *)
 (* Tests *)
 (* ===== *)
@@ -172,10 +182,10 @@ let test_prem_mot = get_prem_mot doc1;;
 let test_decision_doc = s_decision doc_appr1;; 
 
 (* arbres *)
-let mon_arbre = Noeud("tournoi", Feuille Oui, Feuille Non);;
+let arbre_test = Noeud("tournoi", Feuille Oui, Feuille Non);;
 
-let test_est_feuille = est_feuille mon_arbre;;
-let test_mot_racine = s_mot_noeud mon_arbre;; 
+let test_est_feuille = est_feuille arbre_test;;
+let test_mot_racine = s_mot_noeud arbre_test;; 
 
-let sous_arbre_gauche = get_branche_gauche mon_arbre;;
+let sous_arbre_gauche = get_branche_gauche arbre_test;;
 let test_decision_gauche = s_decision_feuille sous_arbre_gauche;; 
