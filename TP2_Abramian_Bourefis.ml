@@ -1,3 +1,6 @@
+(*TP2 Programmation Fonctionnelle SAE S4*)
+(*Kévin ABRAMIAN & Zakaria BOUREFIS*)
+
 (* ==================== *)
 (* Définition des types *)
 (* ==================== *)
