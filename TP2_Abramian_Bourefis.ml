@@ -114,6 +114,17 @@ let (get_reste_ens : tens_doc -> tens_doc) =
 (* l'arbre de décisions *)
 (* ==================== *)
 
+let (cree_feuille : tdecision -> tarbre) = 
+  function dec -> 
+    Feuille dec;;
+    
+(* description : crée un noeud contenant un mot et deux sous-arbres (gauche et droit) *)
+let (cree_noeud : string -> tarbre -> tarbre -> tarbre) = 
+  function mot -> 
+    function gauche -> 
+      function droite -> 
+        Noeud(mot, gauche, droite);;
+
 (* vérifie si l'arbre est une feuille *)
 let (est_feuille : tarbre -> bool) = 
   function Feuille _ -> true
@@ -172,9 +183,13 @@ let rec (classer_doc : tarbre -> tdoc -> tdecision) =
 (* ===== *)
 (* Tests *)
 (* ===== *)
+
 let separateur_test = "====================================================================="
+
 (* docs*)
 let doc1 = add_mot "tournoi" (add_mot "Irlande" (add_mot "victoire" (cree_doc_vide ())));;
+let doc2 = add_mot "plonger" (add_mot "medaille" (add_mot "gagner" (cree_doc_vide ())));;
+let doc3 = add_mot "sieste" (add_mot "canapé" (cree_doc_vide ()));;
 
 let doc_appr1 = cree_doc_apprentissage doc1 Oui;;
 
@@ -182,11 +197,15 @@ let test_prem_mot = get_prem_mot doc1;;
 let test_decision_doc = s_decision doc_appr1;; 
 
 (* arbres *)
-let arbre_test = Noeud("tournoi", Feuille Oui, Feuille Non);;
+let arbre_test = Noeud("plonger", Noeud("tournoi", Feuille Oui, Noeud("gagner",Feuille Oui, Feuille Non)), 
+(* branche droite (si pas )*)
+Noeud("tournoi",Feuille Oui,Feuille Non));;
 
-let test_est_feuille = est_feuille arbre_test;;
-let test_mot_racine = s_mot_noeud arbre_test;; 
+let arbre_test_2 = Noeud("")
+let test_est_feuille = est_feuille arbre_test;; (* faux *)
+let test_mot_racine = s_mot_noeud arbre_test;; (* plonger *)
 
-let sous_arbre_gauche = get_branche_gauche arbre_test;;
-let test_decision_gauche = s_decision_feuille sous_arbre_gauche;; 
-let decision_test = classer_doc arbre_test doc1;; 
+let separateur_test = "=================================== ";;
+let res_doc1 = classer_doc arbre_test doc1;; 
+let res_doc2 = classer_doc arbre_test doc2;; 
+let res_doc3 = classer_doc arbre_test doc3;;
