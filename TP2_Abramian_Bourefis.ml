@@ -183,15 +183,31 @@ let rec (classer_doc : tarbre -> tdoc -> tdecision) =
           classer_doc (get_branche_gauche arbre) doc
         else
           classer_doc (get_branche_droite arbre) doc;;
-        
-(* ajoute un mot au document seulement s'il n'y est pas déjà 
-let (add_mot_unique : string -> tdoc -> tdoc)*)
 
-(* verse tous les mots uniques de doc_source dans doc_dest 
-let rec (fusion_mots_doc : tdoc -> tdoc -> tdoc)*)
+(* =============================================================== *)
+(* Décomposition pour transformer un ensemble de doc en une phrase *)
+(* =============================================================== *)
 
-(* extrait la liste de tous les mots uniques présents dans un ensemble de documents 
-let rec (extraire_vocabulaire : tens_doc -> tdoc)*)
+(* ajoute un mot au document seulement s'il n'y est pas déjà *)
+let (add_mot_unique : string -> tdoc -> tdoc) =
+  function mot ->
+      function doc ->
+        if appartient_doc mot doc then
+          doc
+        else
+          add_mot mot doc;;
+(* verse tous les mots uniques de doc_source dans doc_dest *)
+let rec (fusion_mots_doc : tdoc -> tdoc -> tdoc) =
+  function doc_source ->
+    function doc_dest ->
+      if est_vide_doc doc_source then
+        doc_dest
+      else
+        let mot = get_prem_mot doc_source in
+        let reste = get_reste_doc doc_source in
+        fusion_mots_doc reste (add_mot_unique mot doc_dest);;
+
+(* extrait la liste de tous les mots uniques présents dans un ensemble de documents *) 
 
 (* Écrire la fonction evaluer_arbre *)
 (* Prends un arbre, un tens_doc et renvoie le taux de prédictions correctes (70%)*)
