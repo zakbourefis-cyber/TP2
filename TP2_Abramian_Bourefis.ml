@@ -201,7 +201,7 @@ let arbre_test = Noeud("plonger", Noeud("tournoi", Feuille Oui, Noeud("gagner",F
 (* branche droite (si pas )*)
 Noeud("tournoi",Feuille Oui,Feuille Non));;
 
-let arbre_test_2 = Noeud("")
+(* let arbre_test_2 = Noeud("test",);; *)
 let test_est_feuille = est_feuille arbre_test;; (* faux *)
 let test_mot_racine = s_mot_noeud arbre_test;; (* plonger *)
 
