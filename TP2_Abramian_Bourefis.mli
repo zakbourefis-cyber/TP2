@@ -70,28 +70,5 @@ val get_branche_droite : tarbre -> tarbre
 (* on parcourt le document pour vérifier si un mot donné y est présent *)
 val appartient_doc : string -> tdoc -> bool
 
-
+(*parcourt l'arbre de décision pour classer un document *)
 val classer_doc : tarbre -> tdoc -> tdecision
-
-val separateur_test : string
-
-val doc1 : tdoc
-
-val doc_appr1 : tdoc_apprentissage
-
-val test_prem_mot : string
-
-val test_decision_doc : tdecision
-
-val arbre_test : tarbre
-
-val test_est_feuille : bool
-
-val test_mot_racine : string
-
-val sous_arbre_gauche : tarbre
-
-val test_decision_gauche : tdecision
-
-val decision_test : tdecision
-

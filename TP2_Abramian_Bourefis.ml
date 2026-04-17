@@ -170,7 +170,8 @@ let rec (appartient_doc : string -> tdoc -> bool) =
         else
           let reste = get_reste_doc doc in
           appartient_doc mot_cible reste;;
-
+          
+(* on parcourt l'arbre de décision pour classer un document *)
 let rec (classer_doc : tarbre -> tdoc -> tdecision) =
   function arbre -> 
     function doc ->
