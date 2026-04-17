@@ -1,6 +1,9 @@
 (*TP2 Programmation Fonctionnelle SAE S4*)
 (*Kévin ABRAMIAN & Zakaria BOUREFIS*)
 
+(*A taper avant chaque exec sur MAC pour opam*)
+(*eval $(opam env)*)
+
 (* ==================== *)
 (* Définition des types *)
 (* ==================== *)
