@@ -208,8 +208,17 @@ let rec (fusion_mots_doc : tdoc -> tdoc -> tdoc) =
         fusion_mots_doc reste (add_mot_unique mot doc_dest);;
 
 (* extrait la liste de tous les mots uniques présents dans un ensemble de documents *) 
+let rec (extraire_vocabulaire : tens_doc -> tdoc) =
+  function ens ->
+    if est_vide_ens ens then
+      cree_doc_vide ()
+    else
+      let doc_courant = s_doc (get_prem_ens ens) in
+      let reste_ens = get_reste_ens ens in
+      fusion_mots_doc doc_courant (extraire_vocabulaire reste_ens);;
 
 (* Écrire la fonction evaluer_arbre *)
+
 (* Prends un arbre, un tens_doc et renvoie le taux de prédictions correctes (70%)*)
 
 (* ===== *)
