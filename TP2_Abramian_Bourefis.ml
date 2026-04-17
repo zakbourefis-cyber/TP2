@@ -205,7 +205,7 @@ let rec (fusion_mots_doc : tdoc -> tdoc -> tdoc) =
       else
         let mot = get_prem_mot doc_source in
         let reste = get_reste_doc doc_source in
-        fusion_mots_doc reste (add_mot_unique mot doc_dest);;
+        add_mot_unique mot (fusion_mots_doc reste doc_des);;
 
 (* extrait la liste de tous les mots uniques présents dans un ensemble de documents *) 
 let rec (extraire_vocabulaire : tens_doc -> tdoc) =
