@@ -218,7 +218,25 @@ let rec (extraire_vocabulaire : tens_doc -> tdoc) =
       let reste_ens = get_reste_ens ens in
       fusion_mots_doc doc_courant (extraire_vocabulaire reste_ens);;
 
-(* Écrire la fonction evaluer_arbre *)
+(* =============================================================== *)
+(* Décomposition pour evaluer_arbre (Renvoie le taux de prédiction)*)
+(* =============================================================== *)
+
+(* compte le nombre total de documents dans un ensemble *)
+let rec (compter_docs : tens_doc -> float) = 
+  function ens ->
+    if est_vide_ens ens then
+      0.0
+    else
+      1.0 +. compter_docs (get_reste_ens ens);;
+
+(*Compter les réussites (Sur cet ensemble, combien de fois l'arbre donne la même décision que celle inscrite sur le document de test ?)*)
+
+let (compter_reussites : tarbre -> tens_doc -> float) =
+  function ->
+    function ->
+
+(*Calculer le pourcentage (Réussites / Total * 100).*)
 
 (* Prends un arbre, un tens_doc et renvoie le taux de prédictions correctes (70%)*)
 
