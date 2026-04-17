@@ -196,6 +196,7 @@ let (add_mot_unique : string -> tdoc -> tdoc) =
           doc
         else
           add_mot mot doc;;
+
 (* verse tous les mots uniques de doc_source dans doc_dest *)
 let rec (fusion_mots_doc : tdoc -> tdoc -> tdoc) =
   function doc_source ->
@@ -250,3 +251,4 @@ let separateur_test = "=================================== ";;
 let res_doc1 = classer_doc arbre_test doc1;; 
 let res_doc2 = classer_doc arbre_test doc2;; 
 let res_doc3 = classer_doc arbre_test doc3;;
+
