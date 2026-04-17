@@ -192,6 +192,9 @@ let rec (fusion_mots_doc : tdoc -> tdoc -> tdoc)*)
 (* extrait la liste de tous les mots uniques présents dans un ensemble de documents 
 let rec (extraire_vocabulaire : tens_doc -> tdoc)*)
 
+(* Écrire la fonction evaluer_arbre *)
+(* Prends un arbre, un tens_doc et renvoie le taux de prédictions correctes (70%)*)
+
 (* ===== *)
 (* Tests *)
 (* ===== *)
