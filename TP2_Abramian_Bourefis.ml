@@ -182,6 +182,15 @@ let rec (classer_doc : tarbre -> tdoc -> tdecision) =
           classer_doc (get_branche_gauche arbre) doc
         else
           classer_doc (get_branche_droite arbre) doc;;
+        
+(* ajoute un mot au document seulement s'il n'y est pas déjà 
+let (add_mot_unique : string -> tdoc -> tdoc)*)
+
+(* verse tous les mots uniques de doc_source dans doc_dest 
+let rec (fusion_mots_doc : tdoc -> tdoc -> tdoc)*)
+
+(* extrait la liste de tous les mots uniques présents dans un ensemble de documents 
+let rec (extraire_vocabulaire : tens_doc -> tdoc)*)
 
 (* ===== *)
 (* Tests *)
