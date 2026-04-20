@@ -313,9 +313,7 @@ let test_prem_mot = get_prem_mot doc1;;
 let test_decision_doc = s_decision doc_appr1;; 
 
 (* arbres *)
-let arbre_test = Noeud("plonger", Noeud("tournoi", Feuille Oui, Noeud("gagner",Feuille Oui, Feuille Non)), 
-(* branche droite (si pas )*)
-Noeud("tournoi",Feuille Oui,Feuille Non));;
+let arbre_test = 
 
 (* let arbre_test_2 = Noeud("test",);; *)
 let test_est_feuille = est_feuille arbre_test;; (* faux *)
