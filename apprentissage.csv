@@ -1,0 +1,50 @@
+pétanque,boule,cochonnet,terrain,joueur,+
+BMX,saut,piste,course,champion,+
+boxe,combat,ring,champion,round,KO,arbitre,+
+surf,vague,planche,compétition,+
+concert,musique,scène,artiste,album,-
+tennis,Grand Chelem,balle,filet,revers,service,court,tournoi,+
+polo,cheval,équipe,terrain,ballon,+
+impôt,fiscal,déclaration,revenu,-
+basketball,trois points,rebond,victoire,finale,équipe,+
+ski nautique,slalom,saut,compétition,bateau,+
+rugby,Tournoi des Six Nations,mêlée,essai,finale,ballon,plaquage,arbitre,stade,+
+rugby,plaquage,ballon,touche,arbitre,+
+informatique,programme,bug,compilateur,langage,-
+recherche médicale,laboratoire,étude,vaccin,publication,-
+énergie,éolienne,solaire,électricité,réseau,-
+architecture,bâtiment,plan,structure,matériau,-
+hockey sur glace,palet,patinoire,équipe,but,finale,+
+justice,tribunal,juge,procès,verdict,avocat,-
+astronomie,étoile,planète,galaxie,télescope,-
+tennis,tournoi,classement ATP,court,balle,service,+
+jardin,plante,fleur,saison,-
+aviron,bateau,rame,course,équipe,médaille,+
+voile,régate,vent,bateau,+
+athlétisme,saut en hauteur,perche,record,stade,+
+lutte,tapis,prise,combat,champion,+
+motocross,moto,piste,saut,course,+
+mode,collection,designer,tendance,vêtement,-
+élection présidentielle,vote,candidat,sondage,résultat,-
+université,étudiant,cours,diplôme,examen,amphithéâtre,-
+billard,queue,boule,table,champion,tournoi,+
+canoë kayak,pagaie,rivière,bateau,course,+
+réseau social,publication,abonné,commentaire,influence,-
+squash,raquette,balle,mur,court,+
+musée,exposition,peinture,visiteur,sculpture,-
+processeur AMD,performances,benchmark,ordinateur,mémoire,-
+snowboard,neige,piste,saut,compétition,podium,+
+triathlon,natation,vélo,course,endurance,médaille,podium,chronométrage,transition,+
+cyclisme,Tour de France,étape,peloton,maillot jaune,col,sprint,vainqueur,podium,+
+cyclisme,sprint,vainqueur,descente,peloton,+
+rallye,voiture,étape,pilote,chronométrage,vainqueur,+
+cryptomonnaie,bitcoin,blockchain,transaction,portefeuille,-
+film,cinéma,réalisateur,acteur,scénario,scène,tournage,festival,critique,-
+immobilier,appartement,loyer,achat,marché,notaire,-
+banque,crédit,épargne,client,compte,-
+patinage artistique,glace,chorégraphie,saut,médaille,champion,+
+grève générale,syndicat,manifestation,travailleur,revendication,-
+tennis de table,raquette,balle,filet,set,match,+
+marathon,course,endurance,podium,record,chronométrage,dossard,+
+ski de fond,piste,endurance,compétition,médaille,+
+rugby,ballon,mêlée,arbitre,touche,essai,+

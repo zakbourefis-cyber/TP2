@@ -230,15 +230,33 @@ let rec (compter_docs : tens_doc -> float) =
     else
       1.0 +. compter_docs (get_reste_ens ens);;
 
-(*Compter les réussites (Sur cet ensemble, combien de fois l'arbre donne la même décision que celle inscrite sur le document de test ?)*)
+(* compte les réussites *)
+let rec (compter_reussites : tarbre -> tens_doc -> float) =
+  function arbre ->
+    function ens_test ->
+      if est_vide_ens ens_test then
+        0.0
+      else
+        (* compare la prédiction avec la décision *)
+        if classer_doc arbre (s_doc (get_prem_ens ens_test)) = s_decision (get_prem_ens ens_test) then 
+           1.0 
+         else 
+           0.0
+        +. compter_reussites arbre (get_reste_ens ens_test);;
 
-let (compter_reussites : tarbre -> tens_doc -> float) =
-  function ->
-    function ->
+(* NOTE NOTE NOTE - Calculer le pourcentage (Réussites / Total * 100).*)
+(* renvoie le taux de prédictions correctes en pourcentage *)
+let (evaluer_arbre : tarbre -> tens_doc -> float) =
+  function arbre ->
+    function ens_test ->
+      let total = compter_docs ens_test in
+      if total = 0.0 then
+        0.0 (* On oublie pas pour pas avoir le soucis de la division par 0 *)
+      else
+        let reussites = compter_reussites arbre ens_test in
+        (reussites /. total) *. 100.0;;
 
-(*Calculer le pourcentage (Réussites / Total * 100).*)
-
-(* Prends un arbre, un tens_doc et renvoie le taux de prédictions correctes (70%)*)
+(* NOTE NOTE NOTE - Prends un arbre, un tens_doc et renvoie le taux de prédictions correctes (70%)*)
 
 (* ===== *)
 (* Tests *)
@@ -269,4 +287,6 @@ let separateur_test = "=================================== ";;
 let res_doc1 = classer_doc arbre_test doc1;; 
 let res_doc2 = classer_doc arbre_test doc2;; 
 let res_doc3 = classer_doc arbre_test doc3;;
+
+let taux_reussite = evaluer_arbre arbre_test ens_sports;;
 
