@@ -314,6 +314,18 @@ let test_decision_doc = s_decision doc_appr1;;
 
 (* arbres *)
 let arbre_test = 
+  cree_noeud "balle" 
+    (cree_feuille Oui) (* S'il y a "balle" -> C'est un sport (+) *)
+    (cree_noeud "ballon" 
+      (cree_feuille Oui) (* S'il y a "ballon" -> C'est un sport (+) *)
+      (cree_noeud "programme" 
+        (cree_feuille Non) (* S'il y a "programme" -> Pas un sport (-) *)
+        (cree_noeud "moteur"
+          (cree_feuille Non) (* S'il y a "moteur" -> Pas un sport (-) *)
+          (cree_feuille Oui) (* Par défaut, on dit Oui pour le reste *)
+        )
+      )
+    );;
 
 (* let arbre_test_2 = Noeud("test",);; *)
 let test_est_feuille = est_feuille arbre_test;; (* faux *)
