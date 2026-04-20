@@ -294,6 +294,102 @@ let (charger_csv : string -> tens_doc) =
     let canal = open_in nom_fichier in
     lire_lignes canal;;
 
+(* ======================== *)
+(* Construction arbre (5.1) *)
+(* ======================== *)
+
+(* vérifie si tous les documents d'un ensemble ont la même décision *)
+let rec (tous_meme_decision : tdecision -> tens_doc -> bool) =
+  function dec_ref ->
+    function ens ->
+      if est_vide_ens ens then 
+        true
+      else if s_decision (get_prem_ens ens) = dec_ref then
+        tous_meme_decision dec_ref (get_reste_ens ens)
+      else 
+        false;;
+
+(* vérifie si l'ensemble est parfaitement homogène *)
+let (est_homogene : tens_doc -> bool) =
+  function ens ->
+    if est_vide_ens ens then 
+      true
+    else 
+      tous_meme_decision (s_decision (get_prem_ens ens)) ens;;
+
+(* compte le nombre de oui *)
+let rec (compter_oui : tens_doc -> int) =
+  function ens ->
+    if est_vide_ens ens then 
+      0
+    else 
+      (if s_decision (get_prem_ens ens) = Oui then 1 else 0) + compter_oui (get_reste_ens ens);;
+
+(* compte le nombre de non *)
+let rec (compter_non : tens_doc -> int) =
+  function ens ->
+    if est_vide_ens ens then 
+      0
+    else 
+      (if s_decision (get_prem_ens ens) = Non then 1 else 0) + compter_non (get_reste_ens ens);;
+
+(* renvoie la décision majoritaire d'un ensemble *)
+let (decision_majoritaire : tens_doc -> tdecision) =
+  function ens ->
+    if compter_oui ens >= compter_non ens then 
+      Oui 
+    else 
+      Non;;
+
+(* filtre les documents contenant le mot cible (on met ca a gauche) *)
+let rec (filtre_oui : string -> tens_doc -> tens_doc) =
+  function mot ->
+    function ens ->
+      if est_vide_ens ens then 
+        cree_ens_vide ()
+      else
+        let doc_appr = get_prem_ens ens in
+        let reste = filtre_oui mot (get_reste_ens ens) in
+        if appartient_doc mot (s_doc doc_appr) then 
+          add_doc_ens doc_appr reste 
+        else 
+          reste;;
+
+(* filtre les documents sans le mot cible (on met ca a droite)*)
+let rec (filtre_non : string -> tens_doc -> tens_doc) =
+  function mot ->
+    function ens ->
+      if est_vide_ens ens then 
+        cree_ens_vide ()
+      else
+        let doc_appr = get_prem_ens ens in
+        let reste = filtre_non mot (get_reste_ens ens) in
+        if appartient_doc mot (s_doc doc_appr) then 
+          reste 
+        else 
+          add_doc_ens doc_appr reste;;
+
+(* construit un arbre de décision *)
+let rec (construire_arbre_naif : tdoc -> tens_doc -> tarbre) =
+  function liste_mots ->
+    function ens_appr ->
+      if est_homogene ens_appr then
+        cree_feuille (s_decision (get_prem_ens ens_appr))
+      else if est_vide_doc liste_mots then
+        cree_feuille (decision_majoritaire ens_appr)
+      else
+        let mot_cible = get_prem_mot liste_mots in
+        let reste_mots = get_reste_doc liste_mots in
+        
+        let ens_oui = filtre_oui mot_cible ens_appr in
+        let ens_non = filtre_non mot_cible ens_appr in
+        
+        cree_noeud mot_cible 
+          (if est_vide_ens ens_oui then cree_feuille (decision_majoritaire ens_appr) 
+           else construire_arbre_naif reste_mots ens_oui)
+          (if est_vide_ens ens_non then cree_feuille (decision_majoritaire ens_appr) 
+           else construire_arbre_naif reste_mots ens_non);;
+           
 (* ===== *)
 (* Tests *)
 (* ===== *)
@@ -312,28 +408,9 @@ let doc_appr1 = cree_doc_apprentissage doc1 Oui;;
 let test_prem_mot = get_prem_mot doc1;;
 let test_decision_doc = s_decision doc_appr1;; 
 
-(* arbres *)
-let arbre_test = 
-  cree_noeud "balle" 
-    (cree_feuille Oui) (* S'il y a "balle" -> C'est un sport (+) *)
-    (cree_noeud "ballon" 
-      (cree_feuille Oui) (* S'il y a "ballon" -> C'est un sport (+) *)
-      (cree_noeud "programme" 
-        (cree_feuille Non) (* S'il y a "programme" -> Pas un sport (-) *)
-        (cree_noeud "moteur"
-          (cree_feuille Non) (* S'il y a "moteur" -> Pas un sport (-) *)
-          (cree_feuille Oui) (* Par défaut, on dit Oui pour le reste *)
-        )
-      )
-    );;
-
-(* let arbre_test_2 = Noeud("test",);; *)
-let test_est_feuille = est_feuille arbre_test;; (* faux *)
-let test_mot_racine = s_mot_noeud arbre_test;; (* plonger *)
-
 let separateur_test = "=================================== ";;
-let res_doc1 = classer_doc arbre_test doc1;; 
-let res_doc2 = classer_doc arbre_test doc2;; 
-let res_doc3 = classer_doc arbre_test doc3;;
 
-let taux_reel = evaluer_arbre arbre_test ens_evaluation_complet;;
+let phrase = extraire_vocabulaire ens_apprentissage_complet;;
+let arbre = construire_arbre_naif phrase ens_apprentissage_complet;;
+
+let taux = evaluer_arbre arbre ens_evaluation_complet;;
