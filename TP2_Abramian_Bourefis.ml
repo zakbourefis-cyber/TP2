@@ -206,7 +206,7 @@ let rec (fusion_mots_doc : tdoc -> tdoc -> tdoc) =
       else
         let mot = get_prem_mot doc_source in
         let reste = get_reste_doc doc_source in
-        add_mot_unique mot (fusion_mots_doc reste doc_des);;
+        add_mot_unique mot (fusion_mots_doc reste doc_dest);;
 
 (* extrait la liste de tous les mots uniques présents dans un ensemble de documents *) 
 let rec (extraire_vocabulaire : tens_doc -> tdoc) =
@@ -223,44 +223,82 @@ let rec (extraire_vocabulaire : tens_doc -> tdoc) =
 (* =============================================================== *)
 
 (* compte le nombre total de documents dans un ensemble *)
-let rec (compter_docs : tens_doc -> float) = 
+let rec (compter_docs : tens_doc -> int) = 
   function ens ->
     if est_vide_ens ens then
-      0.0
+      0
     else
-      1.0 +. compter_docs (get_reste_ens ens);;
+      1 + compter_docs (get_reste_ens ens);;
 
 (* compte les réussites *)
-let rec (compter_reussites : tarbre -> tens_doc -> float) =
+let rec (compter_reussites : tarbre -> tens_doc -> int) =
   function arbre ->
     function ens_test ->
       if est_vide_ens ens_test then
-        0.0
+        0
       else
-        (* compare la prédiction avec la décision *)
-        if classer_doc arbre (s_doc (get_prem_ens ens_test)) = s_decision (get_prem_ens ens_test) then 
-           1.0 
+        (if classer_doc arbre (s_doc (get_prem_ens ens_test)) = s_decision (get_prem_ens ens_test) then 
+           1 
          else 
-           0.0
-        +. compter_reussites arbre (get_reste_ens ens_test);;
+           0)
+        + compter_reussites arbre (get_reste_ens ens_test);;
 
-(* NOTE NOTE NOTE - Calculer le pourcentage (Réussites / Total * 100).*)
 (* renvoie le taux de prédictions correctes en pourcentage *)
 let (evaluer_arbre : tarbre -> tens_doc -> float) =
   function arbre ->
     function ens_test ->
       let total = compter_docs ens_test in
-      if total = 0.0 then
-        0.0 (* On oublie pas pour pas avoir le soucis de la division par 0 *)
+      if total = 0 then
+        0.0 (* On n'oublie pas pour ne pas avoir le souci de la division par 0 *)
       else
         let reussites = compter_reussites arbre ens_test in
-        (reussites /. total) *. 100.0;;
+        (* Conversion des entiers en float juste pour la division finale *)
+        (float_of_int reussites /. float_of_int total) *. 100.0;;
 
-(* NOTE NOTE NOTE - Prends un arbre, un tens_doc et renvoie le taux de prédictions correctes (70%)*)
+(* =================================== *)
+(* UTILISATION D'IA POUR LES TESTS CSV *)
+(* =================================== *)
+let rec (separer_mots_decision : string list -> tdoc * tdecision) =
+  function 
+    | [] -> failwith "Erreur : ligne vide"
+    | [dec_str] -> 
+        (* Cas de base : on est sur le dernier élément, c'est la décision *)
+        let dec = if dec_str = "+" then Oui else Non in
+        (cree_doc_vide (), dec)
+    | mot :: reste -> 
+        (* Cas récursif : on extrait le reste, et on ajoute le mot actuel au doc *)
+        let (doc, dec) = separer_mots_decision reste in
+        (add_mot mot doc, dec);;
+
+let (ligne_vers_doc : string -> tdoc_apprentissage) =
+  function ligne ->
+    (* On découpe la ligne en liste de chaînes à chaque virgule *)
+    let mots = String.split_on_char ',' ligne in
+    let (doc, dec) = separer_mots_decision mots in
+    cree_doc_apprentissage doc dec;;
+
+let rec (lire_lignes : in_channel -> tens_doc) =
+  function canal ->
+    try
+      let ligne = input_line canal in
+      let doc_appr = ligne_vers_doc ligne in
+      (* On ajoute le document à l'ensemble et on relance sur la ligne suivante *)
+      add_doc_ens doc_appr (lire_lignes canal)
+    with End_of_file ->
+      (* Fin du fichier : on ferme le canal et on renvoie l'ensemble vide terminal *)
+      close_in canal;
+      cree_ens_vide ();;
+
+let (charger_csv : string -> tens_doc) =
+  function nom_fichier ->
+    let canal = open_in nom_fichier in
+    lire_lignes canal;;
 
 (* ===== *)
 (* Tests *)
 (* ===== *)
+let ens_apprentissage_complet = charger_csv "apprentissage.csv";;
+let ens_evaluation_complet = charger_csv "evaluation.csv";;
 
 let separateur_test = "====================================================================="
 
@@ -288,5 +326,4 @@ let res_doc1 = classer_doc arbre_test doc1;;
 let res_doc2 = classer_doc arbre_test doc2;; 
 let res_doc3 = classer_doc arbre_test doc3;;
 
-let taux_reussite = evaluer_arbre arbre_test ens_sports;;
-
+let taux_reel = evaluer_arbre arbre_test ens_evaluation_complet;;
